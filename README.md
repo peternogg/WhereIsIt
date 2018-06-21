@@ -6,9 +6,10 @@ Sometimes you want to find something in a store. You've never been there, or you
 
 ## Commands
 Available commands are:
-|Command|Arguments|Action
+
+|Command|Arguments|Action|
 |---|---|---|
-|search|partial name(s) of objects|search for the objects in the |search set, and report all known matches
-|help|none|show help like this table
-|add|name, aisle, section, shelf|add a new object to the search set
-exit|none|exit the program
+|search|partial name(s) of objects|search for the objects in the |search set, and report all known matches|
+|help|none|show help like this table|
+|add|name, aisle, section, shelf|add a new object to the search set|
+exit|none|exit the program|
