@@ -12,6 +12,7 @@ const io = readline.createInterface({
     completer: complete
 });
 
+/// Autocomplete function
 function complete(line, callback) {
     const completions = Object.keys(actions);
     const hits = completions.filter((elem) => elem.startsWith(line));
@@ -19,7 +20,7 @@ function complete(line, callback) {
     callback(null, [hits, line]);
 }
 
-/// Search for one or more 
+/// Search for one or more products
 function search(cmd) {
     if (cmd.length < 1) {
         console.log("error: Too few arguments.");
@@ -39,21 +40,37 @@ function search(cmd) {
                 }
             }
         } else {
-            console.log(`An error occurred: ${err}`);
+            console.log(`error: ${err}`);
         }
 
         commandDone();
     })
 }
 
+/// Add a new product
 function add(cmd) {
-    commandDone();
+    if (cmd.length < 4) {
+        console.log("error: Too few arguments.");
+        commandDone();
+    } else {
+        const stmt = db.prepare('insert into products(name, aisle, section, shelf) values (?, ?, ?, ?)');
+        stmt.run(cmd, (err) => {
+            if (err !== null) {
+                console.log(`error: ${err}`);
+            } else {
+                console.log("ok");
+            }
+            commandDone();
+        });
+    }
 }
 
+/// Show the help dialog
 function showHelp() {
     commandDone();
 }
 
+/// Called by a command when it finishes
 function commandDone() {
     io.prompt();
 }
@@ -67,6 +84,7 @@ const actions = {
     }
 }
 
+/// Handle a command from the user
 function handle(cmd) {
     const func = actions[cmd[0]];
     if (func !== undefined) {
