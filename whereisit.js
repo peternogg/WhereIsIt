@@ -30,6 +30,10 @@ function search(cmd) {
     const stmt = db.prepare('select * from products where lower(name) like ?');
 
     for (const param of cmd) {
+        // Skip zero-length searches (like repetative enters)
+        if (param.length == 0)
+            continue;
+        
         stmt.all(`%${param}%`, (err, rows) => {
             console.log(`Searching for ${param}`);
             if (err === null) {
