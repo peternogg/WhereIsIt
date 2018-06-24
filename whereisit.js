@@ -28,23 +28,26 @@ function search(cmd) {
     }
 
     const stmt = db.prepare('select * from products where lower(name) like ?');
-    console.log(`Searching for ${cmd[0]}`);
 
-    stmt.all(`%${cmd[0]}%`, (err, rows) => {
-        if (err === null) {
-            if (rows.length == 0) {
-                console.log(`No results found for ${cmd[0]}\n`);
-            } else {
-                for(const row of rows) {
-                    console.log(`\t=> ${row.name}: Aisle ${row.aisle}, Section ${row.section}, Shelf ${row.shelf}`);
+    for (const param of cmd) {
+        stmt.all(`%${param}%`, (err, rows) => {
+            console.log(`Searching for ${param}`);
+            if (err === null) {
+                if (rows.length == 0) {
+                    console.log(`No results found for ${param}\n`);
+                } else {
+                    for(const row of rows) {
+                        console.log(`\t=> ${row.name}: Aisle ${row.aisle}, Section ${row.section}, Shelf ${row.shelf}`);
+                    }
                 }
+            } else {
+                console.log(`error: ${err}`);
             }
-        } else {
-            console.log(`error: ${err}`);
-        }
+        })
+    }
 
-        commandDone();
-    })
+    // Don't print a prompt until everything in the queue is finished.
+    stmt.finalize(() => commandDone());
 }
 
 /// Add a new product
