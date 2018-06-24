@@ -70,6 +70,11 @@ function add(cmd) {
 
 /// Show the help dialog
 function showHelp() {
+    console.log('Usage:');
+    console.log('add {item_name aisle section shelf}: Add a new item to the search set');
+    console.log('search {item}+: Search for one or more items. \n\tUnrecognized commands are implicit searches.');
+    console.log('exit: Exit the program.');
+    console.log('help: Show this dialog.');
     commandDone();
 }
 
